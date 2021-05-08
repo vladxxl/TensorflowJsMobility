@@ -9,7 +9,7 @@ const Ups = 'augment/up-aug';
 const Downs = 'augment/down-aug';
 const Others = 'augment/other-aug';
 
-const Epochs = 50;
+const Epochs = 300;
 const BatchSize = 0.1;
 
 const train = async () => {
@@ -17,7 +17,7 @@ const train = async () => {
   const model = tf.sequential();
   model.add(tf.layers.inputLayer({ inputShape: [1024] }));
   model.add(tf.layers.dense({ units: 1024, activation: 'relu' }));
-  model.add(tf.layers.dense({ units: 3, activation: 'softmax' }));
+  model.add(tf.layers.dense({ units: 5, activation: 'softmax' }));
   await model.compile({
     optimizer: tf.train.adam(1e-6),
     loss: tf.losses.sigmoidCrossEntropy,
@@ -50,7 +50,6 @@ const train = async () => {
     .map(f => `${Others}/${f}`);
 
   console.log('Building the training set');
-
   const ys = tf.tensor2d(new Array(lefts.length).fill([1,0,0,0,0])
     .concat(new Array(rights.length).fill([0,1,0,0,0]))
     .concat(new Array(ups.length).fill([0,0,1,0,0]))
@@ -65,7 +64,10 @@ const train = async () => {
     .concat(ups.map((path: string) => mobileNet(readInput(path))))
     .concat(downs.map((path: string) => mobileNet(readInput(path))))
     .concat(others.map((path: string) => mobileNet(readInput(path))))) as tf.Tensor2D;
+  console.log('shape:', xs.shape);
+  xs.print();
 
+  console.log('Fitting the model');
   await model.fit(xs, ys, {
     epochs: Epochs,
     batchSize: parseInt(((lefts.length + rights.length + ups.length + downs.length + others.length) * BatchSize).toFixed(0)),

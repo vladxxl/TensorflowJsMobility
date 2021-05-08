@@ -44,7 +44,7 @@ var Rights = 'augment/right-aug';
 var Ups = 'augment/up-aug';
 var Downs = 'augment/down-aug';
 var Others = 'augment/other-aug';
-var Epochs = 50;
+var Epochs = 300;
 var BatchSize = 0.1;
 var train = function () { return __awaiter(_this, void 0, void 0, function () {
     var mobileNet, model, lefts, rights, ups, downs, others, ys, xs;
@@ -57,7 +57,7 @@ var train = function () { return __awaiter(_this, void 0, void 0, function () {
                 model = tf.sequential();
                 model.add(tf.layers.inputLayer({ inputShape: [1024] }));
                 model.add(tf.layers.dense({ units: 1024, activation: 'relu' }));
-                model.add(tf.layers.dense({ units: 3, activation: 'softmax' }));
+                model.add(tf.layers.dense({ units: 5, activation: 'softmax' }));
                 return [4 /*yield*/, model.compile({
                         optimizer: tf.train.adam(1e-6),
                         loss: tf.losses.sigmoidCrossEntropy,
@@ -97,6 +97,9 @@ var train = function () { return __awaiter(_this, void 0, void 0, function () {
                     .concat(ups.map(function (path) { return mobileNet(utils_1.readInput(path)); }))
                     .concat(downs.map(function (path) { return mobileNet(utils_1.readInput(path)); }))
                     .concat(others.map(function (path) { return mobileNet(utils_1.readInput(path)); })));
+                console.log('shape:', xs.shape);
+                xs.print();
+                console.log('Fitting the model');
                 return [4 /*yield*/, model.fit(xs, ys, {
                         epochs: Epochs,
                         batchSize: parseInt(((lefts.length + rights.length + ups.length + downs.length + others.length) * BatchSize).toFixed(0)),

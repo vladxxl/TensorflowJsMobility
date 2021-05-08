@@ -36,7 +36,7 @@ const imageToInput = (image, numChannels) => {
 };
 
 const Layer = 'global_average_pooling2d_1';
-const ModelPath = './model/model.json';
+const ModelPath = './mobile-net/model.json';
 export const loadModel = async () => {
   const mn = new mobilenet.MobileNet(1, 1);
   mn.path = `file://${ModelPath}`;

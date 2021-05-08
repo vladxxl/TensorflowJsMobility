@@ -65,7 +65,7 @@ var imageToInput = function (image, numChannels) {
     return input;
 };
 var Layer = 'global_average_pooling2d_1';
-var ModelPath = './model/model.json';
+var ModelPath = './mobile-net/model.json';
 exports.loadModel = function () { return __awaiter(_this, void 0, void 0, function () {
     var mn;
     return __generator(this, function (_a) {
