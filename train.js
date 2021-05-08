@@ -51,7 +51,7 @@ var train = function () { return __awaiter(_this, void 0, void 0, function () {
     var _this = this;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, utils_1.loadModel()];
+            case 0: return [4 /*yield*/, utils_1.loadModel('./mobile-net/model.json')];
             case 1:
                 mobileNet = _a.sent();
                 model = tf.sequential();
@@ -97,8 +97,6 @@ var train = function () { return __awaiter(_this, void 0, void 0, function () {
                     .concat(ups.map(function (path) { return mobileNet(utils_1.readInput(path)); }))
                     .concat(downs.map(function (path) { return mobileNet(utils_1.readInput(path)); }))
                     .concat(others.map(function (path) { return mobileNet(utils_1.readInput(path)); })));
-                console.log('shape:', xs.shape);
-                xs.print();
                 console.log('Fitting the model');
                 return [4 /*yield*/, model.fit(xs, ys, {
                         epochs: Epochs,
@@ -120,7 +118,7 @@ var train = function () { return __awaiter(_this, void 0, void 0, function () {
                     })];
             case 3:
                 _a.sent();
-                return [4 /*yield*/, model.save('file://movements_simplified')];
+                return [4 /*yield*/, model.save('file://model')];
             case 4:
                 _a.sent();
                 return [2 /*return*/];

@@ -14,16 +14,23 @@ np.random.seed(44)
 ia.seed(44)
 
 def main():
+    print('-Starting augmenting-')
+    print('Augmenting pictures/left..')
     for i in range(1, 102):
         draw_single_sequential_images(str(i).zfill(3), "pictures/left", "augment/left-aug")
+    print('Augmenting pictures/right..')
     for i in range(1, 102):
         draw_single_sequential_images(str(i).zfill(3), "pictures/right", "augment/right-aug")
+    print('Augmenting pictures/up..')
     for i in range(1, 102):
         draw_single_sequential_images(str(i).zfill(3), "pictures/up", "augment/up-aug")
+    print('Augmenting pictures/down..')
     for i in range(1, 102):
         draw_single_sequential_images(str(i).zfill(3), "pictures/down", "augment/down-aug")
+    print('Augmenting pictures/others..')
     for i in range(1, 102):
         draw_single_sequential_images(str(i).zfill(3), "pictures/other", "augment/other-aug")
+    print('-Augmenting complete-')
 
 def draw_single_sequential_images(filename, path, aug_path):
     ia.seed(44)
@@ -89,8 +96,8 @@ def draw_single_sequential_images(filename, path, aug_path):
     # cast to 8bit
     image = np.array(image, np.uint8)
 
-    im = np.zeros((1, 320, 480, 3), dtype=np.uint8)
-    for c in range(0, 1):
+    im = np.zeros((16, 320, 480, 3), dtype=np.uint8)
+    for c in range(0, 16):
         im[c] = image
 
     grid = seq(images=im)

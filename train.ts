@@ -13,7 +13,7 @@ const Epochs = 300;
 const BatchSize = 0.1;
 
 const train = async () => {
-  const mobileNet = await loadModel();
+  const mobileNet = await loadModel('./mobile-net/model.json');
   const model = tf.sequential();
   model.add(tf.layers.inputLayer({ inputShape: [1024] }));
   model.add(tf.layers.dense({ units: 1024, activation: 'relu' }));
@@ -64,8 +64,6 @@ const train = async () => {
     .concat(ups.map((path: string) => mobileNet(readInput(path))))
     .concat(downs.map((path: string) => mobileNet(readInput(path))))
     .concat(others.map((path: string) => mobileNet(readInput(path))))) as tf.Tensor2D;
-  console.log('shape:', xs.shape);
-  xs.print();
 
   console.log('Fitting the model');
   await model.fit(xs, ys, {
@@ -79,7 +77,7 @@ const train = async () => {
     }
   });
 
-  await model.save('file://movements_simplified');
+  await model.save('file://model');
 };
 
 train();
